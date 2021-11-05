@@ -2,6 +2,9 @@ import React from "react";
 import "./sign-in.styles.scss";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
+import { connect } from "react-redux";
+import { setCurrentUser } from "../../redux/user/user.actions";
+import { login } from "../../utils/auth";
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -16,8 +19,15 @@ class SignIn extends React.Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
+    try {
+      const { access_token, user } = await login(this.state);
+      console.log(access_token);
+      this.props.setCurrentUser(user);
+    } catch (error) {
+      alert(error);
+    }
     this.setState({ email: "", password: "" });
   };
   render() {
@@ -49,4 +59,8 @@ class SignIn extends React.Component {
   }
 }
 
-export default SignIn;
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(SignIn);

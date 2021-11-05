@@ -3,23 +3,38 @@ import "./sign-up.styles.scss";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 
+import { registerUser } from "../../utils/auth";
+
 class SignUp extends React.Component {
   constructor() {
     super();
     this.state = {
-      displayName: "",
+      username: "",
       email: "",
-      password: "",
-      confirmPassword: "",
+      password1: "",
+      password2: "",
     };
   }
-  handleSubmit = (event) => {
+
+  handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (this.state.password1 !== this.state.password2) {
+      alert("passwords don't match");
+      return;
+    }
+
+    try {
+      await registerUser(this.state);
+    } catch (error) {
+      alert(error);
+    }
+
     this.setState({
-      displayName: "",
+      username: "",
       email: "",
-      password: "",
-      confirmPassword: "",
+      password1: "",
+      password2: "",
     });
   };
   handleChange = (event) => {
@@ -28,7 +43,7 @@ class SignUp extends React.Component {
   };
 
   render() {
-    const { displayName, email, password, confirmPassword } = this.state;
+    const { username, email, password1, password2 } = this.state;
     return (
       <div className="sign-up">
         <h2 className="title">I do not have an account</h2>
@@ -36,9 +51,9 @@ class SignUp extends React.Component {
         <form className="sign-up-form" onSubmit={this.handleSubmit}>
           <FormInput
             type="text"
-            name="displayName"
-            label="Display Name"
-            value={displayName}
+            name="username"
+            label="Username"
+            value={username}
             handleChange={this.handleChange}
             required
           />
@@ -52,17 +67,17 @@ class SignUp extends React.Component {
           />
           <FormInput
             type="password"
-            name="password"
+            name="password1"
             label="Password"
-            value={password}
+            value={password1}
             handleChange={this.handleChange}
             required
           />
           <FormInput
             type="password"
-            name="confirmPassword"
+            name="password2"
             label="Confirm Password"
-            value={confirmPassword}
+            value={password2}
             handleChange={this.handleChange}
             required
           />
@@ -72,4 +87,5 @@ class SignUp extends React.Component {
     );
   }
 }
+
 export default SignUp;
