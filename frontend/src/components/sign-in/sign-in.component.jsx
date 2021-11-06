@@ -23,12 +23,13 @@ class SignIn extends React.Component {
     event.preventDefault();
     try {
       const { access_token, user } = await login(this.state);
-      console.log(access_token);
-      this.props.setCurrentUser(user);
+      alert(access_token);
+      this.setState({ email: "", password: "" }, () =>
+        this.props.setCurrentUser(user)
+      );
     } catch (error) {
       alert(error);
     }
-    this.setState({ email: "", password: "" });
   };
   render() {
     return (
