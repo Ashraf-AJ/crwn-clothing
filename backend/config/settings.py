@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "dj_rest_auth.registration",
     # local
     "accounts.apps.AccountsConfig",
+    "products.apps.ProductsConfig",
 ]
 
 MIDDLEWARE = [
@@ -159,7 +160,8 @@ REST_FRAMEWORK = {
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        # "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.AllowAny",
     ],
 }
 
