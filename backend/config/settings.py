@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     # local
     "accounts.apps.AccountsConfig",
     "products.apps.ProductsConfig",
+    "payments.apps.PaymentsConfig",
 ]
 
 MIDDLEWARE = [
@@ -179,3 +180,9 @@ JWT_AUTH_REFRESH_COOKIE = "jwt-refresh-token"
 # allauth config
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
+
+# stripe
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = env("STRIPE_PUBLISHABLE_KEY")
+STRIPE_PAYMENT_SUCCESS_URL = env("STRIPE_PAYMENT_SUCCESS_URL")
+STRIPE_PAYMENT_CANCEL_URL = env("STRIPE_PAYMENT_CANCEL_URL")

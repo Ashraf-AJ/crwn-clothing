@@ -10,6 +10,7 @@ djangorestframework = "*"
 dj-rest-auth = {extras = ["with_social"], version = "*"}
 django-cors-headers = "*"
 djangorestframework-simplejwt = "*"
+stripe = "*"
 
 [dev-packages]
 black = "*"
