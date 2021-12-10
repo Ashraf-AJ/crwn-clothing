@@ -1,17 +1,8 @@
 import { api, collectionsPath } from "./paths";
+import { httpGet } from "../utils/utils";
 
 const getCollection = async (name) => {
-  const response = await fetch(`${api}${collectionsPath}${name}/`, {
-    method: "GET",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
-  });
+  const response = await httpGet(`${api}${collectionsPath}${name}/`);
   const data = await response.json();
   return data;
 };

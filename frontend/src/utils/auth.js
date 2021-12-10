@@ -1,38 +1,12 @@
 import { api, registrationPath, loginPath, logoutPath } from "./paths";
-const post =
-  (url) =>
-  async (data = {}) => {
-    const response = await fetch(url, {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
-      body: JSON.stringify(data),
-    });
-    return response.json();
-  };
+import { httpPost } from "./utils";
 
-export const registerUser = post(`${api}${registrationPath}`);
+export const registerUser = httpPost(`${api}${registrationPath}`);
 
-export const login = post(`${api}${loginPath}`);
+export const login = httpPost(`${api}${loginPath}`);
 
 export const logout = (setCurrentUser) => {
-  fetch(`${api}${logoutPath}`, {
-    method: "POST",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
-  });
+  httpPost(`${api}${logoutPath}`)();
 
   setCurrentUser(null);
 };

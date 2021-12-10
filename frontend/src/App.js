@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -9,8 +9,15 @@ import ShopPage from "./pages/shop/shop.component";
 import SignInSignUpPage from "./pages/sign-in-sign-up/sign-in-sign-up.component";
 import CheckoutPage from "./pages/checkout/checkout.component";
 import { selectCurrentUser } from "./redux/user/user.selectors";
+import { loadStripeObj } from "./utils/utils";
+import { clearCart } from "./redux/cart/cart.actions";
+loadStripeObj();
 
-const App = ({ currentUser }) => {
+const App = ({ currentUser, clearCart }) => {
+  useEffect(() => {
+    clearCart();
+  }, [clearCart]);
+
   return (
     <div className="App">
       <Header />
@@ -28,7 +35,10 @@ const App = ({ currentUser }) => {
     </div>
   );
 };
+const mapDispatchToProps = (dispatch) => ({
+  clearCart: () => dispatch(clearCart()),
+});
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
 });
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

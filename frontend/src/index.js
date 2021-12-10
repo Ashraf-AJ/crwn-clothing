@@ -5,15 +5,23 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./redux/store";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import "./index.css";
 import App from "./App";
+
+const stripePromise = loadStripe(
+  "pk_test_51JuFoGKNVorDZfk5Do8dWz78cVyVEKOOnQTf8srpQGG8apuCrySICkUIFPnyJHufb2Z99O4nhCuHKX8Yli3M5bdD00bKhYDn4N"
+);
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <PersistGate persistor={persistor}>
-          <App />
+          <Elements stripe={stripePromise}>
+            <App />
+          </Elements>
         </PersistGate>
       </BrowserRouter>
     </Provider>
