@@ -1,0 +1,77 @@
+version: "3"
+
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: crwn-clothing-api
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/backend
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=${DEBUG}
+      - DB_HOST=postgres
+      - DB_PORT=${DB_PORT}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=${DB_USER}
+      - DB_NAME=${DB_NAME}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_PAYMENT_SUCCESS_URL=${STRIPE_PAYMENT_SUCCESS_URL}
+      - STRIPE_PAYMENT_CANCEL_URL=${STRIPE_PAYMENT_CANCEL_URL}
+    ports:
+      - "${API_PORT}:8000"
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        python manage.py runserver 0.0.0.0:8000
+        tail -F dev/null
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_HOST: ${API_HOST}
+        REACT_APP_API_PORT: ${API_PORT}
+    image: crwn-clothing-frontend
+    depends_on:
+      - api
+    volumes:
+      - ./frontend:/frontend
+    environment:
+      - REACT_APP_API_HOST=${API_HOST}
+      - REACT_APP_API_PORT=${API_PORT}
+      - CHOKIDAR_USEPOLLING=${CHOKIDAR_USEPOLLING}
+    ports:
+      - "3000:3000"
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        npm start
+        tail -F dev/null
+
+  postgres:
+    image: postgres:13.3
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  postgres_data:

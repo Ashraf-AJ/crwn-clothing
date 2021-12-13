@@ -34,5 +34,5 @@ export const httpGet = async (url) => {
 export const loadStripeObj = async () => {
   const response = await httpGet(`${api}${publishableKey}`);
   const pubKey = await response.json();
-  loadStripe(pubKey);
+  return await loadStripe(pubKey);
 };

@@ -1,4 +1,6 @@
-export const api = "http://127.0.0.1:8000/";
+import { getAPIPath } from "../config";
+
+export const api = getAPIPath();
 export const registrationPath = "auth/registration/";
 export const loginPath = "auth/login/";
 export const logoutPath = "auth/logout/";
