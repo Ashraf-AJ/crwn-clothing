@@ -3,6 +3,7 @@
 make sure you're currently in root directory then :<br>
 
 - create `.env` file with the listed environment variables in `.env.example`
+- `docker-compose build`
 - `docker-compose up`
 - `docker-compose exec api python manage.py makemigrations`
 - `docker-compose exec api python manage.py migrate`
